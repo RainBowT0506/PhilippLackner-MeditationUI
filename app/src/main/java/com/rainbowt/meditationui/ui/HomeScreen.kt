@@ -40,7 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rainbowt.meditationui.R
+import com.rainbowt.meditationui.model.BottomMenuContent
 import com.rainbowt.meditationui.model.Feature
+import com.rainbowt.meditationui.ui.theme.AquaBlue
 import com.rainbowt.meditationui.ui.theme.Beige1
 import com.rainbowt.meditationui.ui.theme.Beige2
 import com.rainbowt.meditationui.ui.theme.Beige3
@@ -102,6 +104,15 @@ fun HomeScreen() {
                         Beige3
                     )
 
+                )
+            )
+            BottomMenu(
+                items = listOf(
+                    BottomMenuContent("Home", R.drawable.ic_home),
+                    BottomMenuContent("Meditate", R.drawable.ic_bubble),
+                    BottomMenuContent("Sleep", R.drawable.ic_moon),
+                    BottomMenuContent("Music", R.drawable.ic_music),
+                    BottomMenuContent("Profile", R.drawable.ic_profile),
                 )
             )
         }
@@ -327,6 +338,79 @@ fun FeatureItem(feature: Feature) {
                     .clip(RoundedCornerShape(10.dp))
                     .background(ButtonBlue)
                     .padding(vertical = 6.dp, horizontal = 15.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomMenu(
+    items: List<BottomMenuContent>,
+    modifier: Modifier = Modifier,
+    activeHighlightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
+    initialSelectedItemIndex: Int = 0
+) {
+    var selectedItemIndex by remember {
+        mutableStateOf(initialSelectedItemIndex)
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(DeepBlue)
+            .padding(15.dp)
+    ) {
+        items.forEachIndexed { index, item ->
+            BottomMenuItem(
+                item = item,
+                isSelected = index == selectedItemIndex,
+                activeHighlightColor = activeHighlightColor,
+                activeTextColor = activeTextColor,
+                inactiveTextColor = inactiveTextColor,
+            ) {
+                selectedItemIndex = index
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomMenuItem(
+    item: BottomMenuContent,
+    isSelected: Boolean = false,
+    activeHighlightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
+    onItemClick: () -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.clickable {
+            onItemClick()
+        }
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isSelected) activeHighlightColor else Color.Transparent)
+                .padding(10.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = item.iconID),
+                contentDescription = item.title,
+                tint = if (isSelected) activeTextColor else inactiveTextColor,
+                modifier = Modifier.size(20.dp)
+            )
+
+            Text(
+                text = item.title,
+                color = if (isSelected) activeTextColor else inactiveTextColor
             )
         }
     }
