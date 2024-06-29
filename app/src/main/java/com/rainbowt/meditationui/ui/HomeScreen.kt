@@ -41,6 +41,7 @@ fun HomeScreen() {
     ) {
         Column {
             GreetingSection()
+            ChipSection(chips = listOf("Sweet sleep", "Insomnia", "Depression"))
         }
     }
 
@@ -75,6 +76,35 @@ fun GreetingSection(
                 tint = Color.White,
                 modifier = Modifier.size(24.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun ChipSection(
+    chips: List<String>
+) {
+    var selectedChipIndex by remember {
+        mutableStateOf(0)
+    }
+    LazyRow {
+        items(chips.size) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(start = 15.dp, top = 15.dp, bottom = 15.dp)
+                    .clickable {
+                        selectedChipIndex = it
+                    }
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                        if (selectedChipIndex == it) ButtonBlue
+                        else DarkerButtonBlue
+                    )
+                    .padding(15.dp)
+            ) {
+                Text(text = chips[it], color = TextWhite)
+            }
         }
     }
 }
