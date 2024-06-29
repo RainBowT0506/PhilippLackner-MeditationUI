@@ -67,7 +67,7 @@ fun HomeScreen() {
     Box(
         modifier = Modifier
             .background(DeepBlue)
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
         Column {
             GreetingSection()
@@ -106,20 +106,19 @@ fun HomeScreen() {
 
                 )
             )
-            BottomMenu(
-                items = listOf(
-                    BottomMenuContent("Home", R.drawable.ic_home),
-                    BottomMenuContent("Meditate", R.drawable.ic_bubble),
-                    BottomMenuContent("Sleep", R.drawable.ic_moon),
-                    BottomMenuContent("Music", R.drawable.ic_music),
-                    BottomMenuContent("Profile", R.drawable.ic_profile),
-                )
-            )
         }
+        BottomMenu(
+            items = listOf(
+                BottomMenuContent("Home", R.drawable.ic_home),
+                BottomMenuContent("Meditate", R.drawable.ic_bubble),
+                BottomMenuContent("Sleep", R.drawable.ic_moon),
+                BottomMenuContent("Music", R.drawable.ic_music),
+                BottomMenuContent("Profile", R.drawable.ic_profile),
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 
 }
-
 
 @Composable
 fun GreetingSection(
@@ -136,20 +135,20 @@ fun GreetingSection(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Good morning, $name!",
+                text = "Good morning, $name",
                 style = MaterialTheme.typography.h2
             )
             Text(
                 text = "We wish you have a good day!",
                 style = MaterialTheme.typography.body1
             )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Search",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
         }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = "Search",
+            tint = Color.White,
+            modifier = Modifier.size(24.dp)
+        )
     }
 }
 
@@ -370,7 +369,7 @@ fun BottomMenu(
                 isSelected = index == selectedItemIndex,
                 activeHighlightColor = activeHighlightColor,
                 activeTextColor = activeTextColor,
-                inactiveTextColor = inactiveTextColor,
+                inactiveTextColor = inactiveTextColor
             ) {
                 selectedItemIndex = index
             }
@@ -385,7 +384,7 @@ fun BottomMenuItem(
     activeHighlightColor: Color = ButtonBlue,
     activeTextColor: Color = Color.White,
     inactiveTextColor: Color = AquaBlue,
-    onItemClick: () -> Unit,
+    onItemClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -407,11 +406,10 @@ fun BottomMenuItem(
                 tint = if (isSelected) activeTextColor else inactiveTextColor,
                 modifier = Modifier.size(20.dp)
             )
-
-            Text(
-                text = item.title,
-                color = if (isSelected) activeTextColor else inactiveTextColor
-            )
         }
+        Text(
+            text = item.title,
+            color = if(isSelected) activeTextColor else inactiveTextColor
+        )
     }
 }
